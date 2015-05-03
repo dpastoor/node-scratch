@@ -35,6 +35,13 @@ console.log(contents.toString());
 var helloAsync = require("./02-helloworld-async.js")
 
 helloAsync.say(args.file, function(err, contents) { // dont' forget err!
+	if (err) {
+		console.error("Error: " + err);
+	} else {
 	console.log(contents.toString());
+	}
 });
 
+
+// now if try something that doesn't work node 02-hwModule.js --file=test2.txt
+// will get a proper error message passed along
