@@ -32,4 +32,9 @@ console.log(contents.toString());
 
 // node 02-hwModule.js --file=test.txt
 
+var helloAsync = require("./02-helloworld-async.js")
+
+helloAsync.say(args.file, function(err, contents) { // dont' forget err!
+	console.log(contents.toString());
+});
 
