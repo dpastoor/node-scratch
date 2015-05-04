@@ -6,9 +6,7 @@ function say (filename) {
 	return fs.readFileSync(filename);
 }
 
-
-var fs = require("fs");
-
+var fs = require("fs"); 
 
 //to expose to public api
 module.exports.say = say;
