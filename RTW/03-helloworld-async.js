@@ -1,34 +1,33 @@
-function sayAsync (filename, cb) {
+function readFile (filename) {
+	var sq = ASQ(); // create an empty sequence ready for you to start chaining off of 
 
-	// async implementation with callback
-	// async read, when get contents back, which could take milliseconds
-	// then check to make sure successful
-	// if not successful immediately error out
-	// else we can simulate doing some other async activity like a database call
-	// so now when we switch back to our command line and run our code
-	// with a real file it will wait before printing (similar to having to wait)
-	// to actually get a file back from the server
-	return fs.readFile(filename, function(err, contents) {
-		// if the error occurs should immediately throw the error up
-		if (err) {
-			cb(err);
-		} else {
-			// setTimout is to simulate something that takes time that we'd handle
-			// in an async fashions
-			setTimeout(function() {
-				cb(null, contents);
-			}, 1000);
-		}
-	}) ;
+//whenever need to pass an error first callback (err, success)
+// for environments that are not natively promise-aware
+// we need to construct a callback via errfcb = error-first-callback 
+// will auto wire-in success/error pattern
+	fs.readFile(filename, sq.errfcb() );
+	return sq;
 }
 
+function delayMsg (done, contents) { // recieves done trigger and message (in this case file contents)
+	//simulate waiting for data back fom server
+	setTimeout(function() {
+		done(contents);// passes along contents after 1000 ms
+	}, 1000);
+}
+
+function say(filename) {
+	return readFile(filename)
+			.then(delayMsg);
+}
 
 var fs = require("fs");
-
+var ASQ = require("asynquence");
+require("asynquence-contrib"); // doesn't return everything so don't need to actually store it
 
 //to expose to public api
-module.exports.say = sayAsync;
-
+module.exports.say = say;
+ 
 
 // this pattern is very easy and natural to work with these things
 // can work 95% of the time with node code using the require system

@@ -20,28 +20,36 @@ if (args.help || !args.file) {
 	// can give a status code upon exiting (eg in this case 1)
 }
 
-var hello = require("./02-helloworld.js")
 
-var contents = hello.say(args.file);
+var hello = require("./03-helloworld-async.js")
 
-// console.log(contents); this will actually print out a BUFFER 
-// because will pull in an array buffer (efficient binary representation of data)
-// that looks something like <Buffer 48 65 6c 6c 6f 20 77 6f 72 6c 64 21>
-// so need to add toString 
-console.log(contents.toString());
-
-// node 02-hwModule.js --file=test.txt
-
-var helloAsync = require("./03-helloworld-async.js")
-
-helloAsync.say(args.file, function(err, contents) { // dont' forget err!
-	if (err) {
-		console.error("Error: " + err);
-	} else {
+// now due to the way we have designed the new say function it will return
+// a sequence back (like a promise we can chain off of)
+hello.say(args.file)
+.val(function (contents) {
 	console.log(contents.toString());
-	}
+})
+.or(function(err) {
+	// if error reading file, delay, etc
+	console.error("Error: " + err);
 });
 
+// all promise libraries have a way of handling the error 
+// asynquence allows to register an error handler by calling .or which will
+// be where the error messages will bubble up to
 
-// now if try something that doesn't work node 02-hwModule.js --file=test2.txt
+
+// above code can be read as:
+//call hello.say and when it finishes I will either get the conents or an error
+
+//other way via
+// hello.say(args.file)
+// .then(function(done,contents) {
+// ...
+//})
+// but rather than typing out done and the getting back param i don't need anymore
+// the shortcut is just to give back .val which assumes the it will be a synchronous last step
+
+// still called via node 03-hwModule.js --file=test.txt
+// if try something that doesn't work node 03-hwModule.js --file=test2.txt
 // will get a proper error message passed along
