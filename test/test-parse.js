@@ -1,7 +1,7 @@
 var csv = require("fast-csv");
 var _ = require('underscore');
 var result = [];
-csv.fromPath("public/data/concTimeSmall.csv", {headers: true})
+csv.fromPath("../concTimeSmall.csv", {headers: true})
 .on("data", function 	 (data) {
 		data.x = +data.TIME;
 		delete(data.TIME);
@@ -16,6 +16,9 @@ csv.fromPath("public/data/concTimeSmall.csv", {headers: true})
   		obj.color = '#000000';
   		return obj;
   });
+            console.log("printing chartData")
   		console.log(chartData);
 });
 
+console.log("printing result");
+console.log(result); // notice result is still [] 
