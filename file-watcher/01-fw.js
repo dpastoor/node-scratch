@@ -18,16 +18,9 @@ console.log("end");
 
 //if (global.baseUrl) global.baseUrl += '/'
 //
-//const watcher = chokidar.watch(filePath, { usePolling: true })
-//
-//// Quit when all windows are closed.
-//
-//    title: path.basename(filePath) + ' - vmd',
-//
-//
-//  watcher.on('change', logChange)
-//
-//  function logChange () {
-//    console.log("file changed!")
-//  }
-//})
+const watcher = chokidar.watch(filePath, { usePolling: true })
+watcher.on('change', logChange);
+
+  function logChange () {
+    console.log("file changed!")
+  }
