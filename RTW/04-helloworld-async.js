@@ -1,5 +1,5 @@
 function readFile (filename) {
-// readFile handles the whole file at once, which may not be optimal for larger files
+// fs.readFile handles the whole file at once, which may not be optimal for larger files
 // where we might want to dump stuff into the browser as it goes or just don't want to wait
 // until the entire file is loaded
 
@@ -10,12 +10,19 @@ function readFile (filename) {
 
 		var stream = fs.createReadStream(filename); // at this moment has not loaded anything
 		var contents = ""; //initialize the contents
+
+		//somewhat derived example, in reality would likely be piping a read-in csv file
+		// to a csv parser or a gziped file into something to unzip, etc
+		stream.pipe(fs.createWriteStream(filename+".backup"));
+
+
 		// need to listen to events
 		stream.on("data", function(chunk) {
 			//for temporary visual purposes we can add a console.log to see the data event
 			//console.log("data");
 			contents += chunk;// every time data event fires want to append to contents
-
+			//console.log("a chunk!")
+			//console.log(chunk.toString());
 			//by default pulls in chunk up to buffer size, fires the data event, empties the stream
 			// and keep going until it exhausts the contents of the file
 		});
