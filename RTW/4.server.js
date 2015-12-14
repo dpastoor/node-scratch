@@ -1,6 +1,6 @@
 var http = require("http");
 
-var = handleHTTP = function(req, res) {
+var handleHTTP = function(req, res) {
 	// req is a request STREAM and res is a response STREAM
 	res.end("hello world");
 
